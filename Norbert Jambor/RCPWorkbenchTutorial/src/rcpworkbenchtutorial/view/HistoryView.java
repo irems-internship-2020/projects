@@ -5,20 +5,12 @@ import org.eclipse.ui.part.ViewPart;
 
 public class HistoryView extends ViewPart {
 
-	public HistoryView() {
-		// TODO Auto-generated constructor stub
-	}
+	public HistoryView() {}
 
 	@Override
-	public void createPartControl(Composite parent) {
-		// TODO Auto-generated method stub
-
-	}
+	public void createPartControl(Composite parent) {}
 
 	@Override
-	public void setFocus() {
-		// TODO Auto-generated method stub
-
-	}
+	public void setFocus() {}
 
 }

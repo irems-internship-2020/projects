@@ -111,9 +111,9 @@
             restorable="true">
       </view>
       <view
-            class="rcpworkbenchtutorial.view.TaskView"
-            id="rcpworkbenchtutorial.view.task"
-            name="Task"
+            class="rcpworkbenchtutorial.view.TableView"
+            id="rcpworkbenchtutorial.view.table"
+            name="Table"
             restorable="true">
       </view>
    </extension>
@@ -123,7 +123,7 @@
             targetID="*">
          <view
                closeable="true"
-               id="rcpworkbenchtutorial.view.task"
+               id="rcpworkbenchtutorial.view.table"
                minimized="false"
                moveable="true"
                relationship="right"

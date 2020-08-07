@@ -5,20 +5,12 @@ import org.eclipse.ui.part.ViewPart;
 
 public class ContactView extends ViewPart {
 
-	public ContactView() {
-		// TODO Auto-generated constructor stub
-	}
+	public ContactView() {}
 
 	@Override
-	public void createPartControl(Composite parent) {
-		// TODO Auto-generated method stub
-
-	}
+	public void createPartControl(Composite parent) {}
 
 	@Override
-	public void setFocus() {
-		// TODO Auto-generated method stub
-
-	}
+	public void setFocus() {}
 
 }
