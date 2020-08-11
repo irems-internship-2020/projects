@@ -29,10 +29,10 @@ import rcpworkbenchtutorial.comparator.MyViewerComparator;
 import rcpworkbenchtutorial.filter.PersonFilter;
 
 public class FilterView extends ViewPart {
-    public static final String ID = "rcpworkbenchtutorial.view.comparator";
+    public static final String ID = "rcpworkbenchtutorial.view.filter";
     private MyViewerComparator comparator;
 
-    private TableViewer viewer;
+    private TableViewer tableViewer;
     
     private PersonFilter filter;
         
@@ -60,32 +60,32 @@ public class FilterView extends ViewPart {
         createViewer(parent);
         // Set the sorter for the table
         comparator = new MyViewerComparator();
-        viewer.setComparator(comparator);
+        tableViewer.setComparator(comparator);
         
         searchText.addKeyListener(new KeyAdapter() {
         	public void keyReleased(KeyEvent ke) {
         		filter.setSearchText(searchText.getText());
-                viewer.refresh();
+                tableViewer.refresh();
         	}
         });
         filter = new PersonFilter();
-        viewer.addFilter(filter);
+        tableViewer.addFilter(filter);
     }
 
     public void createViewer(Composite parent) {
-        viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
+        tableViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
                 | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
-        createColumns(parent, viewer);
-        final Table table = viewer.getTable();
+        createColumns(parent, tableViewer);
+        final Table table = tableViewer.getTable();
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
 
-        viewer.setContentProvider(new ArrayContentProvider());
+        tableViewer.setContentProvider(new ArrayContentProvider());
         // Get the content for the viewer, setInput will call getElements in the
         // contentProvider
-        viewer.setInput(ModelProvider.INSTANCE.getPersons());
+        tableViewer.setInput(ModelProvider.INSTANCE.getPersons());
         // make the selection available to other views
-        getSite().setSelectionProvider(viewer);
+        getSite().setSelectionProvider(tableViewer);
 
         // Layout the viewer
         GridData gridData = new GridData();
@@ -94,11 +94,11 @@ public class FilterView extends ViewPart {
         gridData.grabExcessHorizontalSpace = true;
         gridData.grabExcessVerticalSpace = true;
         gridData.horizontalAlignment = GridData.FILL;
-        viewer.getControl().setLayoutData(gridData);
+        tableViewer.getControl().setLayoutData(gridData);
     }
 
     public TableViewer getViewer() {
-        return viewer;
+        return tableViewer;
     }
 
     // This will create the columns for the table
@@ -158,7 +158,7 @@ public class FilterView extends ViewPart {
 
     private TableViewerColumn createTableViewerColumn(String title, int bound,
             final int colNumber) {
-        final TableViewerColumn viewerColumn = new TableViewerColumn(viewer,
+        final TableViewerColumn viewerColumn = new TableViewerColumn(tableViewer,
                 SWT.NONE);
         final TableColumn column = viewerColumn.getColumn();
         column.setText(title);
@@ -176,9 +176,9 @@ public class FilterView extends ViewPart {
             public void widgetSelected(SelectionEvent e) {
                 comparator.setColumn(index);
                 int dir = comparator.getDirection();
-                viewer.getTable().setSortDirection(dir);
-                viewer.getTable().setSortColumn(column);
-                viewer.refresh();
+                tableViewer.getTable().setSortDirection(dir);
+                tableViewer.getTable().setSortColumn(column);
+                tableViewer.refresh();
             }
         };
         return selectionAdapter;
@@ -188,10 +188,10 @@ public class FilterView extends ViewPart {
      * Passing the focus request to the viewer's control.
      */
     public void setFocus() {
-        viewer.getControl().setFocus();
+        tableViewer.getControl().setFocus();
     }
 
     public void refresh() {
-        viewer.refresh();
+        tableViewer.refresh();
     }
 }

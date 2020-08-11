@@ -11,7 +11,7 @@ import org.eclipse.ui.part.ViewPart;
 import rcpworkbenchtutorial.comm.AddPersonDialog;
 
 public class ChangeView extends ViewPart {
-    public static final String ID = "rcpworkbenchtutorial.view.change";
+    public static final String ID = "rcpworkbenchtutorial.view.filter";
     private Button btnNewButton;
 
     @Override
