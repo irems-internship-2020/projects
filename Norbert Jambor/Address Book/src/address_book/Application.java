@@ -1,4 +1,4 @@
-package rcpworkbenchtutorial;
+package address_book;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;

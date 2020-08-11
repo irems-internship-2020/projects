@@ -1,4 +1,4 @@
-package rcpworkbenchtutorial;
+package rcpworkbenchtutorial.main;
 
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
