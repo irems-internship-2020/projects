@@ -1,4 +1,4 @@
-package address_book;
+package rcpworkbenchtutorial.main;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -9,7 +9,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * This class controls all aspects of the application's execution
  */
-public class Application implements IApplication {
+public class ApplicationTest implements IApplication {
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {

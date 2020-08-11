@@ -1,4 +1,4 @@
-package address_book;
+package addressbook.main;
 
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
@@ -6,7 +6,7 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
-	private static final String PERSPECTIVE_ID = "Address_Book.perspective"; //$NON-NLS-1$
+	private static final String PERSPECTIVE_ID = "addressbook.perspective"; //$NON-NLS-1$
 
 	@Override
     public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {

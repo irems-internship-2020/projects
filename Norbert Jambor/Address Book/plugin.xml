@@ -7,17 +7,44 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="address_book.Application">
+               class="addressbook.main.Application">
          </run>
       </application>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="address_book.Perspective"
+            class="addressbook.main.Perspective"
             name="RCP Perspective"
-            id="Address_Book.perspective">
+            id="addressbook.perspective">
       </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="addressbook.view.ContactsView"
+            id="addressbook.view.contacts"
+            name="ContactsView"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="*">
+         <view
+               id="addressbook.view.contacts"
+               minimized="false"
+               relationship="stack"
+               relative="org.eclipse.ui.editorss">
+         </view>
+      </perspectiveExtension>
    </extension>
 
 </plugin>

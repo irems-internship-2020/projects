@@ -7,7 +7,7 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="rcpworkbenchtutorial.main.Application">
+               class="rcpworkbenchtutorial.main.ApplicationTest">
          </run>
       </application>
    </extension>

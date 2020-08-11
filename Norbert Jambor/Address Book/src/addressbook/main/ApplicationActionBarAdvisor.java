@@ -1,4 +1,4 @@
-package address_book;
+package addressbook.main;
 
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;

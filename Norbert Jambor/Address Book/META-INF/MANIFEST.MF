@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Address_Book
 Bundle-SymbolicName: Address_Book;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: address_book.Activator
+Bundle-Activator: addressbook.main.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.apache.felix.scr,

@@ -1,4 +1,4 @@
-package address_book;
+package addressbook.main;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.application.ActionBarAdvisor;
@@ -20,9 +20,9 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
     @Override
     public void preWindowOpen() {
         IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-        configurer.setInitialSize(new Point(400, 300));
+        configurer.setInitialSize(new Point(1400, 800));
         configurer.setShowCoolBar(false);
         configurer.setShowStatusLine(false);
-        configurer.setTitle("Hello RCP"); //$NON-NLS-1$
+        configurer.setTitle("Address"); //$NON-NLS-1$
     }
 }
