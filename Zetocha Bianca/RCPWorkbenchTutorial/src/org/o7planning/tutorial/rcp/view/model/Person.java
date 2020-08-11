@@ -4,7 +4,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
 
 public class Person extends ViewerFilter {
@@ -14,6 +13,7 @@ public class Person extends ViewerFilter {
     private String gender;
     private Integer age;
     private String searchString;
+    
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(
             this);
 

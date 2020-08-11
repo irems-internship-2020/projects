@@ -31,6 +31,16 @@
             id="org.o7planning.tutorial.rcp.cmd.user"
             name="Call UserEditor">
       </command>
+      <command
+            defaultHandler="org.o7planning.tutorial.rcp.cmd.DeletePerson"
+            id="org.o7planning.tutorial.rcp.cmd.delete"
+            name="Delete Person">
+      </command>
+      <command
+            defaultHandler="org.o7planning.tutorial.rcp.cmd.CopyPersonClipboard"
+            id="org.o7planning.tutorial.rcp.cmd.copyPerson"
+            name="Copy Person Clipboard">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -48,7 +58,8 @@
                   commandId="org.o7planning.tutorial.rcp.cmd.user"
                   icon="icons/Editor16.png"
                   label="Open UserEditor"
-                  style="push">
+                  style="push"
+                  tooltip="Open UserEditor">
             </command>
          </menu>
          <menu
@@ -79,6 +90,19 @@
                   icon="icons/about16.png"
                   label="About"
                   style="push">
+            </command>
+            <command
+                  commandId="org.o7planning.tutorial.rcp.cmd.delete"
+                  icon="icons/Trash16.png"
+                  label="Delete Person"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.o7planning.tutorial.rcp.cmd.copyPerson"
+                  icon="icons/copy16.png"
+                  label="Copy Person Clipboard"
+                  style="push"
+                  tooltip="Copy">
             </command>
          </toolbar>
          <toolbar
@@ -116,6 +140,13 @@
             name="Table"
             restorable="true">
       </view>
+      <view
+            class="org.o7planning.tutorial.rcp.view.ChangeView"
+            icon="icons/History16.png"
+            id="org.o7planning.tutorial.rcp.view.change"
+            name="ChangeView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -127,7 +158,7 @@
                minimized="false"
                moveable="true"
                relationship="right"
-               relative="org.eclipse.ui.editorss">
+               relative="org.o7planning.tutorial.rcp.view.change">
          </view>
       </perspectiveExtension>
       <perspectiveExtension
@@ -160,10 +191,11 @@
          </view>
          <view
                closeable="true"
-               id="org.o7planning.tutorial.rcp.view.user"
+               id="org.o7planning.tutorial.rcp.view.change"
                minimized="false"
-               relationship="left"
-               relative="org.o7planning.tutorial.rcp.view.user"
+               moveable="true"
+               relationship="stack"
+               relative="org.o7planning.tutorial.rcp.view.table"
                showTitle="true">
          </view>
       </perspectiveExtension>
