@@ -1,4 +1,4 @@
-package rcpworkbenchtutorial;
+package rcpworkbenchtutorial.main;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.application.ActionBarAdvisor;

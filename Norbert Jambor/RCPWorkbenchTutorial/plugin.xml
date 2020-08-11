@@ -7,14 +7,14 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="rcpworkbenchtutorial.Application">
+               class="rcpworkbenchtutorial.main.Application">
          </run>
       </application>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="rcpworkbenchtutorial.Perspective"
+            class="rcpworkbenchtutorial.main.Perspective"
             name="RCP Perspective"
             id="rcpworkbenchtutorial.perspective">
       </perspective>
@@ -116,6 +116,30 @@
             name="Table"
             restorable="true">
       </view>
+      <view
+            class="rcpworkbenchtutorial.view.ComparatorView"
+            id="rcpworkbenchtutorial.view.comparator"
+            name="Comparator"
+            restorable="true">
+      </view>
+      <view
+            class="rcpworkbenchtutorial.view.EditTableView"
+            id="rcpworkbenchtutorial.view.edittable"
+            name="EditTable"
+            restorable="true">
+      </view>
+      <view
+            class="rcpworkbenchtutorial.view.FilterView"
+            id="rcpworkbenchtutorial.view.filter"
+            name="Filter"
+            restorable="true">
+      </view>
+      <view
+            class="rcpworkbenchtutorial.view.ChangeView"
+            id="rcpworkbenchtutorial.view.change"
+            name="Change"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -123,9 +147,27 @@
             targetID="*">
          <view
                closeable="true"
-               id="rcpworkbenchtutorial.view.table"
+               id="rcpworkbenchtutorial.view.comparator"
                minimized="false"
                moveable="true"
+               relationship="right"
+               relative="org.eclipse.ui.editorss">
+         </view>
+         <view
+               id="rcpworkbenchtutorial.view.edittable"
+               minimized="false"
+               relationship="right"
+               relative="org.eclipse.ui.editorss">
+         </view>
+         <view
+               id="rcpworkbenchtutorial.view.filter"
+               minimized="false"
+               relationship="right"
+               relative="org.eclipse.ui.editorss">
+         </view>
+         <view
+               id="rcpworkbenchtutorial.view.change"
+               minimized="false"
                relationship="right"
                relative="org.eclipse.ui.editorss">
          </view>

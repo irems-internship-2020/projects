@@ -1,4 +1,4 @@
-package rcpworkbenchtutorial;
+package rcpworkbenchtutorial.main;
 
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
