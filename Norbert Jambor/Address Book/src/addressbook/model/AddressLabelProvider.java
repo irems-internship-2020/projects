@@ -8,11 +8,11 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.graphics.Image;
 
-public class LabelProvider implements ITableLabelProvider {
+public class AddressLabelProvider implements ITableLabelProvider {
 	
     private List<TableViewerColumn> columnList = new ArrayList<TableViewerColumn>();
 	
-	public LabelProvider(final List<TableViewerColumn> columnList){
+	public AddressLabelProvider(final List<TableViewerColumn> columnList){
 		this.columnList = columnList;
 	}
 
@@ -50,14 +50,17 @@ public class LabelProvider implements ITableLabelProvider {
 	    case "Last Name":
 		return person.getLastName();
 		
+	    case "Country":
+		return person.getCountry();
+		
+	    case "City":
+		return person.getCity();
+		
 	    case "Street":
 		return person.getStreet();
 		
-	    case "Phone Number":
-		return person.getPhoneNumber().toString();
-		
-	    case "Email":
-		return person.getEmail();
+	    case "Postal Code":
+		return person.getPostalCode().toString();
 		
 		default:
 			throw new IllegalArgumentException("Not implemented");

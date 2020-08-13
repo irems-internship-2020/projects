@@ -23,28 +23,88 @@
          point="org.eclipse.ui.views">
       <view
             class="addressbook.view.ContactsView"
-            id="addressbook.view.contacts"
+            id="addressbook.view.contact"
             name="ContactsView"
+            restorable="true">
+      </view>
+      <view
+            class="addressbook.view.AddressView"
+            id="addressbook.view.address"
+            name="AddressView"
             restorable="true">
       </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:addressbook.view.contact">
+         <command
+               commandId="addressbook.command.create"
+               icon="icons/eclipse16.png"
+               label="Create Contact"
+               style="push"
+               tooltip="Create Contact">
+         </command>
+         <command
+               commandId="addressbook.command.delete"
+               icon="icons/eclipse16.png"
+               label="Delete"
+               style="push"
+               tooltip="Delete Contact">
+         </command>
+         <command
+               commandId="Address Book.command4"
+               icon="icons/eclipse16.png"
+               label="Edit Contact"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
+      <editor
+            class="addressbook.editor.CreateContact"
+            default="false"
+            id="addressbook.editor.create"
+            name="Create Contact">
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
             targetID="*">
          <view
-               id="addressbook.view.contacts"
+               id="addressbook.view.contact"
                minimized="false"
                relationship="stack"
                relative="org.eclipse.ui.editorss">
          </view>
+         <view
+               id="addressbook.view.address"
+               minimized="false"
+               relationship="right"
+               relative="org.eclipse.ui.editorss"
+               visible="false">
+         </view>
       </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="addressbook.command.CreateContactCommand"
+            id="addressbook.command.create"
+            name="Create">
+      </command>
+      <command
+            defaultHandler="addressbook.command.DeleteContactCommand"
+            id="addressbook.command.delete"
+            name="Delete">
+      </command>
    </extension>
 
 </plugin>

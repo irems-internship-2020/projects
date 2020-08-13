@@ -23,7 +23,6 @@ public class Application implements IApplication {
 		} finally {
 			display.dispose();
 		}
-		
 	}
 
 	@Override

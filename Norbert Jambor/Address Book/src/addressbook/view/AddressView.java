@@ -1,24 +1,19 @@
 package addressbook.view;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-import addressbook.model.ColumnTitleProvider;
+import addressbook.model.AddressLabelProvider;
+import addressbook.model.AddressTitleProvider;
 import addressbook.model.Contact;
-import addressbook.model.LabelProvider;
-import addressbook.model.ModelProvider;
 
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.layout.GridData;
@@ -27,12 +22,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
-public class ContactsView extends ViewPart {
-	public static final String ID = "addressbook.view.contact";
+public class AddressView extends ViewPart {
+	public static final String ID = "addressbook.view.address";
 
 	private TableViewer viewer;
 
-	private ColumnTitleProvider titleProvider;
+	private AddressTitleProvider titleProvider;
 
 	List<TableViewerColumn> columnList = new ArrayList<TableViewerColumn>();
 
@@ -52,11 +47,10 @@ public class ContactsView extends ViewPart {
 		final Table table = viewer.getTable();
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-
+		
 		viewer.setContentProvider(new ArrayContentProvider());
-		viewer.setInput(ModelProvider.INSTANCE.getContacts());
 		getSite().setSelectionProvider(viewer);
-
+		
 		GridData gridData = new GridData();
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
@@ -64,22 +58,11 @@ public class ContactsView extends ViewPart {
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		viewer.getControl().setLayoutData(gridData);
-
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
-	        @Override
-	        public void doubleClick(DoubleClickEvent event) {
-	            IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-	            Contact firstElement = (Contact) selection.getFirstElement();
-	            
-	            try {
-					AddressView view = (AddressView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-							.getActivePage().showView(AddressView.ID);
-					view.setInput(firstElement);
-	            } catch (PartInitException e) {
-					e.printStackTrace();
-				}
-	        }
-	    });
+	}
+	
+	public void setInput(Contact firstElement) {
+		viewer.setInput(Arrays.asList(firstElement));
+		viewer.refresh();
 	}
 
 	public TableViewer getViewer() {
@@ -90,13 +73,13 @@ public class ContactsView extends ViewPart {
 	private void createColumns(final Composite parent, final TableViewer tableViewer) {
 		int counter = 0;
 
-		for (ColumnTitleProvider title : titleProvider.values()) {
+		for (AddressTitleProvider title : titleProvider.values()) {
 			TableViewerColumn col = createTableViewerColumn(title.getText(), 100, counter);
 			columnList.add(col);
 			counter++;
 		}
 
-		tableViewer.setLabelProvider(new LabelProvider(columnList));
+		tableViewer.setLabelProvider(new AddressLabelProvider(columnList));
 	}
 
 	private TableViewerColumn createTableViewerColumn(String title, int bound, final int colNumber) {

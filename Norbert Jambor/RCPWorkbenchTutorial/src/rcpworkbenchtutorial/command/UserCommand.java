@@ -12,7 +12,7 @@ import rcpworkbenchtutorial.editor.UserEditorInput;
 
 public class UserCommand extends AbstractHandler {
 
-   public static final String ID = "org.wikiict.tutorial.rcp.cmd.user";
+   public static final String ID = "rcpworkbenchtutorial.command.user";
 
    @Override
    public Object execute(ExecutionEvent event) throws ExecutionException {

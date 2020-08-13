@@ -23,6 +23,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         configurer.setInitialSize(new Point(1400, 800));
         configurer.setShowCoolBar(false);
         configurer.setShowStatusLine(false);
-        configurer.setTitle("Address"); //$NON-NLS-1$
+        configurer.setShowPerspectiveBar(true);
+        configurer.setShowProgressIndicator(true);
+        configurer.setTitle("Address");
     }
 }
