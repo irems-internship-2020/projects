@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -30,7 +31,7 @@ import org.eclipse.swt.widgets.Text;
 public class ContactsView extends ViewPart {
 	public static final String ID = "addressbook.view.contact";
 
-	private TableViewer viewer;
+	public TableViewer viewer;
 
 	private ColumnTitleProvider titleProvider;
 
@@ -80,6 +81,12 @@ public class ContactsView extends ViewPart {
 				}
 	        }
 	    });
+	}
+	
+	public Contact firstElement() {
+		StructuredSelection selection = (StructuredSelection) viewer.getSelection();
+		Contact firstElement = (Contact) selection.getFirstElement();
+		return firstElement;
 	}
 
 	public TableViewer getViewer() {

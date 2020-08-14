@@ -1,7 +1,7 @@
 package addressbook.model;
 
 public enum AllTitleProvider {
-	ID("ID"), FIRSTNAME("First Name"), LASTNAME("Last Name"), COUNTRY("Country"), City("City"), STREET("Street"),
+	ID("ID"), FIRSTNAME("First Name"), LASTNAME("Last Name"), COUNTRY("Country"), CITY("City"), STREET("Street"),
 		POSTAL("Postal Code"), PHONENUMBER("Phone Number"), EMAIL("Email");
 	
 	private String text;
