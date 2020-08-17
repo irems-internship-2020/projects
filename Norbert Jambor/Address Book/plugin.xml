@@ -24,47 +24,15 @@
       <view
             class="addressbook.view.ContactsView"
             id="addressbook.view.contact"
-            name="ContactsView"
+            name="Contacts View"
             restorable="true">
       </view>
       <view
             class="addressbook.view.AddressView"
             id="addressbook.view.address"
-            name="AddressView"
+            name="Details View"
             restorable="true">
       </view>
-   </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            allPopups="false"
-            locationURI="menu:org.eclipse.ui.main.menu">
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="toolbar:addressbook.view.contact">
-         <command
-               commandId="addressbook.command.create"
-               icon="icons/eclipse16.png"
-               label="Create Contact"
-               style="push"
-               tooltip="Create Contact">
-         </command>
-         <command
-               commandId="addressbook.command.delete"
-               icon="icons/eclipse16.png"
-               label="Delete Contact"
-               style="push"
-               tooltip="Delete Contact">
-         </command>
-         <command
-               commandId="addressbook.command.edit"
-               icon="icons/eclipse16.png"
-               label="Edit Contact"
-               style="push"
-               tooltip="Edit Contact">
-         </command>
-      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
@@ -88,11 +56,11 @@
          <view
                id="addressbook.view.contact"
                minimized="false"
-               relationship="stack"
+               relationship="left"
                relative="org.eclipse.ui.editorss">
          </view>
          <view
-               id="addressbook.view.address"
+               id="addressbook.editor.create"
                minimized="false"
                relationship="right"
                relative="org.eclipse.ui.editorss"
@@ -124,10 +92,25 @@
             id="addressbook.view.contactContribution"
             targetID="addressbook.view.contact">
          <action
-               class="viewactiondelegate.EditorContactAction"
+               class="addressbook.action.DeleteContactAction"
                enablesFor="1"
-               id="addressbook.editor.create"
+               id="Address Book.action2"
+               label="Delete"
+               style="push"
+               toolbarPath="additions">
+         </action>
+         <action
+               class="addressbook.action.EditorContactAction"
+               enablesFor="1"
+               id="addressbook.editor.edit"
                label="Edit"
+               style="push"
+               toolbarPath="additions">
+         </action>
+         <action
+               class="addressbook.action.CreateContactAction"
+               id="addressbook.editor.create"
+               label="Create"
                style="push"
                toolbarPath="additions">
          </action>

@@ -10,6 +10,10 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.PartInitException;
@@ -20,6 +24,8 @@ import addressbook.model.ColumnTitleProvider;
 import addressbook.model.Contact;
 import addressbook.model.LabelProvider;
 import addressbook.model.ModelProvider;
+import addressbook.comparator.MyViewerComparator;
+import addressbook.filter.ContactFilter;
 
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.layout.GridData;
@@ -33,7 +39,11 @@ public class ContactsView extends ViewPart {
 
 	public TableViewer viewer;
 
+	private ContactFilter filter;
+
 	private ColumnTitleProvider titleProvider;
+	
+    private MyViewerComparator comparator;
 
 	List<TableViewerColumn> columnList = new ArrayList<TableViewerColumn>();
 
@@ -45,6 +55,18 @@ public class ContactsView extends ViewPart {
 		final Text searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
 		searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 		createViewer(parent);
+		
+        comparator = new MyViewerComparator();
+        viewer.setComparator(comparator);
+        
+		searchText.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent ke) {
+				filter.setSearchText(searchText.getText());
+				viewer.refresh();
+			}
+		});
+		filter = new ContactFilter();
+		viewer.addFilter(filter);
 	}
 
 	private void createViewer(Composite parent) {
@@ -67,22 +89,22 @@ public class ContactsView extends ViewPart {
 		viewer.getControl().setLayoutData(gridData);
 
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
-	        @Override
-	        public void doubleClick(DoubleClickEvent event) {
-	            IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-	            Contact firstElement = (Contact) selection.getFirstElement();
-	            
-	            try {
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+				Contact firstElement = (Contact) selection.getFirstElement();
+
+				try {
 					AddressView view = (AddressView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 							.getActivePage().showView(AddressView.ID);
 					view.setInput(firstElement);
-	            } catch (PartInitException e) {
+				} catch (PartInitException e) {
 					e.printStackTrace();
 				}
-	        }
-	    });
+			}
+		});
 	}
-	
+
 	public Contact firstElement() {
 		StructuredSelection selection = (StructuredSelection) viewer.getSelection();
 		Contact firstElement = (Contact) selection.getFirstElement();
@@ -113,7 +135,22 @@ public class ContactsView extends ViewPart {
 		column.setWidth(bound);
 		column.setResizable(true);
 		column.setMoveable(true);
+        column.addSelectionListener(getSelectionAdapter(column, colNumber));
 		return viewerColumn;
+	}
+
+	private SelectionAdapter getSelectionAdapter(final TableColumn column, final int index) {
+		SelectionAdapter selectionAdapter = new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				comparator.setColumn(index);
+				int dir = comparator.getDirection();
+				viewer.getTable().setSortDirection(dir);
+				viewer.getTable().setSortColumn(column);
+				viewer.refresh();
+			}
+		};
+		return selectionAdapter;
 	}
 
 	public void setFocus() {

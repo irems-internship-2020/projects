@@ -1,40 +1,48 @@
-package addressbook.command;
+package addressbook.action;
 
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.IViewActionDelegate;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import addressbook.view.ContactsView;
 import addressbook.model.Contact;
 import addressbook.model.ModelProvider;
+import addressbook.view.ContactsView;
 
-public class DeleteContactCommand extends AbstractHandler {
-	@SuppressWarnings("unchecked")
+public class DeleteContactAction implements IViewActionDelegate {
+
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-		IWorkbenchPage page = window.getActivePage();
-		ContactsView view = (ContactsView) page.findView(ContactsView.ID);
+	public void run(IAction action) {
+		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		ContactsView view = (ContactsView) activePage.findView(ContactsView.ID);
 		ISelection selection = view.getSite().getSelectionProvider().getSelection();
-
+		
 		if (selection != null && selection instanceof IStructuredSelection) {
 			List<Contact> persons = ModelProvider.INSTANCE.getContacts();
 			IStructuredSelection sel = (IStructuredSelection) selection;
 
-			for (Iterator<Contact> iterator = sel.iterator(); iterator.hasNext();) {
+			for (@SuppressWarnings("unchecked")
+			Iterator<Contact> iterator = sel.iterator(); iterator.hasNext();) {
 				Contact person = iterator.next();
 				persons.remove(person);
 			}
 			view.getViewer().refresh();
 		}
-		return null;
+	}
+
+	@Override
+	public void selectionChanged(IAction action, ISelection selection) {
+	}
+
+	@Override
+	public void init(IViewPart view) {
 	}
 }

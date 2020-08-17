@@ -39,7 +39,6 @@ public class TableView extends ViewPart {
             "icons/uncheck.png").createImage();
     
 	public static ImageDescriptor getImageDescriptor(String file) {
-	    // assume that the current class is called View.java
 	    Bundle bundle = FrameworkUtil.getBundle(TableView.class);
 	    URL url = FileLocator.find(bundle, new org.eclipse.core.runtime.Path("icons/" + file), null);
 	    return ImageDescriptor.createFromURL(url);
@@ -54,6 +53,7 @@ public class TableView extends ViewPart {
         searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
                 | GridData.HORIZONTAL_ALIGN_FILL));
         createViewer(parent);
+        
     }
 
     private void createViewer(Composite parent) {
@@ -65,14 +65,10 @@ public class TableView extends ViewPart {
         table.setLinesVisible(true);
 
         viewer.setContentProvider(new ArrayContentProvider());
-        // Get the content for the viewer, setInput will call getElements in the
-        // contentProvider
-        viewer.setInput(ModelProvider.INSTANCE.getPersons());
-        // make the selection available to other views
-        getSite().setSelectionProvider(viewer);
-        // Set the sorter for the table
 
-        // Layout the viewer
+        viewer.setInput(ModelProvider.INSTANCE.getPersons());
+        getSite().setSelectionProvider(viewer);
+
         GridData gridData = new GridData();
         gridData.verticalAlignment = GridData.FILL;
         gridData.horizontalSpan = 2;
@@ -112,7 +108,6 @@ public class TableView extends ViewPart {
 
     }
 
-    //Passing the focus request to the viewer's control.
     public void setFocus() {
         viewer.getControl().setFocus();
     }

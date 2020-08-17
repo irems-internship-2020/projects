@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -22,6 +24,7 @@ import addressbook.view.ContactsView;
 
 import org.eclipse.swt.widgets.Text;
 
+@SuppressWarnings("static-access")
 public class CreateContact extends EditorPart {
 
 	public static final String ID = "addressbook.editor.create";
@@ -37,42 +40,54 @@ public class CreateContact extends EditorPart {
 	private Text phoneNumber;
 	private Text email;
 	private Contact contact;
+	private boolean dirty = false;
+	private static boolean isCreate = false;
 
 	public CreateContact() {
 	}
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		contact = new Contact();
-		contact.setId(Integer.valueOf(id.getText()));
-		contact.setFirstName(firstName.getText().toString());
-		contact.setLastName(lastName.getText().toString());
-		contact.setCountry(country.getText().toString());
-		contact.setCity(city.getText().toString());
-		contact.setStreet(street.getText().toString());
-		contact.setPostalCode(Integer.valueOf(postalCode.getText()));
-		contact.setPhoneNumber(Integer.valueOf(phoneNumber.getText()));
-		contact.setFirstName(email.getText().toString());
+			if (isCreate) {
+				contact = new Contact();
+			}
+			
+			if(id.getText().toString() != "")
+				contact.setId(Integer.valueOf(id.getText()));
+			else {
+				contact.setId(0);
+			}
+			contact.setFirstName(firstName.getText().toString());
+			contact.setLastName(lastName.getText().toString());
+			contact.setCountry(country.getText().toString());
+			contact.setCity(city.getText().toString());
+			contact.setStreet(street.getText().toString());
+			if(postalCode.getText().toString() != "")
+				contact.setPostalCode(Integer.valueOf(postalCode.getText()));
+			else {
+				contact.setPostalCode(0);
+			}
+			if(phoneNumber.getText().toString() != "") {
+				contact.setPhoneNumber(Integer.valueOf(phoneNumber.getText()));
+			}
+			else {
+				contact.setPhoneNumber(0);
+			}
+			contact.setEmail(email.getText().toString());
 
-		//setDirty(false);
-		
-		List<Contact> contacts = ModelProvider.INSTANCE.getContacts();
-		contacts.add(contact);
+			if (isCreate) {
+				List<Contact> contacts = ModelProvider.INSTANCE.getContacts();
+				contacts.add(contact);
+			}
 
-		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		ContactsView view = (ContactsView) activePage.findView("addressbook.view.contact");
-		view.getViewer().refresh();
+			IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			ContactsView view = (ContactsView) activePage.findView("addressbook.view.contact");
+			view.getViewer().refresh();
 
-		id.setText("");
-		firstName.setText("");
-		lastName.setText("");
-		country.setText("");
-		city.setText("");
-		street.setText("");
-		postalCode.setText("");
-		phoneNumber.setText("");
-		email.setText("");
-	}
+			setEmptyModel();
+
+			setDirty(false);
+		}
 
 	@Override
 	public void doSaveAs() {
@@ -89,18 +104,15 @@ public class CreateContact extends EditorPart {
 
 	@Override
 	public boolean isDirty() {
-//		if (dirty)
-//	    return true;
-//		else
-//	    return false;
-		return true;
+		if (dirty)
+			return true;
+		else
+			return false;
 	}
 
 	public void setDirty(boolean isDirty) {
-// 		if (this.isDirty() == dirty)
-//		return;
-//		this.dirty = dirty;
-		this.setDirty(isDirty);
+		this.dirty = isDirty;
+		firePropertyChange(PROP_DIRTY);
 	}
 
 	@Override
@@ -108,7 +120,6 @@ public class CreateContact extends EditorPart {
 		return false;
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public void createPartControl(Composite parent) {
 		GridLayout layout = new GridLayout();
@@ -122,41 +133,145 @@ public class CreateContact extends EditorPart {
 		id = new Text(parent, SWT.SINGLE | SWT.BORDER);
 		id.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
-		new Label(parent, SWT.NONE).setText(title.FIRSTNAME.getText());
-		firstName = new Text(parent, SWT.SINGLE | SWT.BORDER);
-		firstName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		createFirstNameWidget(parent);
 
-		new Label(parent, SWT.NONE).setText(title.LASTNAME.getText());
-		lastName = new Text(parent, SWT.SINGLE | SWT.BORDER);
-		lastName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		createLastNameWidget(parent);
 
-		new Label(parent, SWT.NONE).setText(title.COUNTRY.getText());
-		country = new Text(parent, SWT.SINGLE | SWT.BORDER);
-		country.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		createCountryWidget(parent);
 
-		new Label(parent, SWT.NONE).setText(title.CITY.getText());
-		city = new Text(parent, SWT.SINGLE | SWT.BORDER);
-		city.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		createCityWidget(parent);
 
-		new Label(parent, SWT.NONE).setText(title.STREET.getText());
-		street = new Text(parent, SWT.SINGLE | SWT.BORDER);
-		street.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		createStreetWidget(parent);
 
-		new Label(parent, SWT.NONE).setText(title.POSTAL.getText());
-		postalCode = new Text(parent, SWT.SINGLE | SWT.BORDER);
-		postalCode.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		createPostalCodeWidget(parent);
 
-		new Label(parent, SWT.NONE).setText(title.PHONENUMBER.getText());
-		phoneNumber = new Text(parent, SWT.SINGLE | SWT.BORDER);
-		phoneNumber.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		createPhoneNumberWidget(parent);
 
+		createEmailWidget(parent);
+	}
+
+	private void createEmailWidget(Composite parent) {
 		new Label(parent, SWT.NONE).setText(title.EMAIL.getText());
 		email = new Text(parent, SWT.SINGLE | SWT.BORDER);
 		email.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		email.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				setDirty(true);
+			}
+		});
+	}
+
+	private void createPhoneNumberWidget(Composite parent) {
+		new Label(parent, SWT.NONE).setText(title.PHONENUMBER.getText());
+		phoneNumber = new Text(parent, SWT.SINGLE | SWT.BORDER);
+		phoneNumber.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		phoneNumber.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				setDirty(true);
+			}
+		});
+	}
+
+	private void createPostalCodeWidget(Composite parent) {
+		new Label(parent, SWT.NONE).setText(title.POSTAL.getText());
+		postalCode = new Text(parent, SWT.SINGLE | SWT.BORDER);
+		postalCode.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		postalCode.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				setDirty(true);
+			}
+		});
+	}
+
+	private void createStreetWidget(Composite parent) {
+		new Label(parent, SWT.NONE).setText(title.STREET.getText());
+		street = new Text(parent, SWT.SINGLE | SWT.BORDER);
+		street.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		street.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				setDirty(true);
+			}
+		});
+	}
+
+	private void createCityWidget(Composite parent) {
+		new Label(parent, SWT.NONE).setText(title.CITY.getText());
+		city = new Text(parent, SWT.SINGLE | SWT.BORDER);
+		city.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		city.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				setDirty(true);
+			}
+		});
+	}
+
+	private void createCountryWidget(Composite parent) {
+		new Label(parent, SWT.NONE).setText(title.COUNTRY.getText());
+		country = new Text(parent, SWT.SINGLE | SWT.BORDER);
+		country.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		country.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				setDirty(true);
+			}
+		});
+	}
+
+	private void createLastNameWidget(Composite parent) {
+		new Label(parent, SWT.NONE).setText(title.LASTNAME.getText());
+		lastName = new Text(parent, SWT.SINGLE | SWT.BORDER);
+		lastName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		lastName.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				setDirty(true);
+			}
+		});
+	}
+
+	private void createFirstNameWidget(Composite parent) {
+		new Label(parent, SWT.NONE).setText(title.FIRSTNAME.getText());
+		firstName = new Text(parent, SWT.SINGLE | SWT.BORDER);
+		firstName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		firstName.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				setDirty(true);
+			}
+		});
 	}
 
 	private void setModel(Contact model) {
 		this.contact = model;
+		setDirty(false);
+
+		id.setText(model.getId().toString());
+		firstName.setText(model.getFirstName());
+		lastName.setText(model.getLastName());
+		country.setText(model.getCountry());
+		city.setText(model.getCity());
+		street.setText(model.getStreet());
+		postalCode.setText(model.getPostalCode().toString());
+		phoneNumber.setText(model.getPhoneNumber().toString());
+		email.setText(model.getEmail());
+	}
+
+	private void setEmptyModel() {
+		setDirty(false);
+		id.setText("");
+		firstName.setText("");
+		lastName.setText("");
+		country.setText("");
+		city.setText("");
+		street.setText("");
+		postalCode.setText("");
+		phoneNumber.setText("");
+		email.setText("");
 	}
 
 	@Override
@@ -164,6 +279,8 @@ public class CreateContact extends EditorPart {
 	}
 
 	public static void openEditor(Contact model) {
+		isCreate = false;
+
 		CreateContactInput input = new CreateContactInput();
 
 		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
@@ -178,6 +295,27 @@ public class CreateContact extends EditorPart {
 				newAddress.setModel(model);
 			}
 
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void openCreateEditor() {
+		isCreate = true;
+
+		CreateContactInput input = new CreateContactInput();
+
+		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+		try {
+			CreateContact addressBookEditor = (CreateContact) activePage.getActiveEditor();
+
+			if (addressBookEditor != null) {
+				addressBookEditor.setEmptyModel();
+			} else {
+				@SuppressWarnings("unused")
+				CreateContact newAddress = (CreateContact) activePage.openEditor(input, ID);
+			}
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
