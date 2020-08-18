@@ -7,29 +7,22 @@ public class Contact {
 	private Integer id;
 	private String firstName;
 	private String lastName;
-	private String street;
+	private Address address;
 	private Integer phoneNumber;
 	private String email;
-	private String country;
-	private String city;
-	private Integer postalCode;
 	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
 	public Contact() {
 	}
 
-	public Contact(Integer id, String firstName, String lastName, String street, Integer phoneNumber, String email,
-			String country, String city, Integer postalCode) {
-		super();
+	public Contact(Integer id, String firstName, String lastName, Address address, Integer phoneNumber,
+			String email) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.street = street;
+		this.address = address;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
-		this.country = country;
-		this.city = city;
-		this.postalCode = postalCode;
 	}
 
 	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
@@ -51,9 +44,9 @@ public class Contact {
 	public String getLastName() {
 		return lastName;
 	}
-
-	public String getStreet() {
-		return street;
+	
+	public Address getAddress() {
+		return address;
 	}
 
 	public Integer getPhoneNumber() {
@@ -62,18 +55,6 @@ public class Contact {
 
 	public String getEmail() {
 		return email;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public Integer getPostalCode() {
-		return postalCode;
 	}
 
 	public void setId(Integer id) {
@@ -87,9 +68,9 @@ public class Contact {
 	public void setLastName(String lastName) {
 		propertyChangeSupport.firePropertyChange("lastName", this.lastName, this.lastName = lastName);
 	}
-
-	public void setStreet(String street) {
-		propertyChangeSupport.firePropertyChange("lastName", this.street, this.street = street);
+	
+	public void setAddress(Address address) {
+		propertyChangeSupport.firePropertyChange("address", this.address, this.address = address);
 	}
 
 	public void setPhoneNumber(Integer phoneNumber) {
@@ -99,17 +80,4 @@ public class Contact {
 	public void setEmail(String email) {
 		propertyChangeSupport.firePropertyChange("married", this.email, this.email = email);
 	}
-
-	public void setCountry(String country) {
-		propertyChangeSupport.firePropertyChange("firstName", this.country, this.country = country);
-	}
-
-	public void setCity(String city) {
-		propertyChangeSupport.firePropertyChange("lastName", this.city, this.city = city);
-	}
-
-	public void setPostalCode(Integer postalCode) {
-		propertyChangeSupport.firePropertyChange("lastName", this.postalCode, this.postalCode = postalCode);
-	}
-
 }

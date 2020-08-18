@@ -45,7 +45,7 @@ public class MyViewerComparator extends ViewerComparator {
             rc = p1.getLastName().compareTo(p2.getLastName());
             break;
         case 3:
-            rc = p1.getStreet().compareTo(p2.getStreet());
+            rc = p1.getAddress().getStreet().compareTo(p2.getAddress().getStreet());
             break;
         case 4:
             rc = p1.getPhoneNumber().compareTo(p2.getPhoneNumber());
@@ -54,13 +54,13 @@ public class MyViewerComparator extends ViewerComparator {
             rc = p1.getEmail().compareTo(p2.getEmail());
             break;
         case 6:
-            rc = p1.getCountry().compareTo(p2.getCountry());
+            rc = p1.getAddress().getCountry().compareTo(p2.getAddress().getCountry());
             break;
         case 7:
-            rc = p1.getCity().compareTo(p2.getCity());
+            rc = p1.getAddress().getCity().compareTo(p2.getAddress().getCity());
             break;
         case 8:
-            rc = p1.getPostalCode().compareTo(p2.getPostalCode());
+            rc = p1.getAddress().getPostalCode().compareTo(p2.getAddress().getPostalCode());
             break;
         default:
             rc = 0;

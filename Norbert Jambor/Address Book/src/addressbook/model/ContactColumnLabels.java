@@ -1,11 +1,11 @@
 package addressbook.model;
 
-public enum ColumnTitleProvider {
+public enum ContactColumnLabels {
 	ID("ID"), FIRSTNAME("First Name"), LASTNAME("Last Name"), STREET("Street"), PHONENUMBER("Phone Number"), EMAIL("Email");
 
 	private String text;
 
-	ColumnTitleProvider(final String text) {
+	ContactColumnLabels(final String text) {
 		this.text = text;
 	}
 

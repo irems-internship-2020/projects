@@ -38,26 +38,26 @@ public class LabelProvider implements ITableLabelProvider {
 	@Override
 	public String getColumnText(Object element, int columnIndex) {
 		if(element instanceof Contact) {
-			Contact person = (Contact) element;
+			Contact contact = (Contact) element;
 		switch (columnList.get(columnIndex).getColumn().getText())
 	    {
 	    case "ID":
-		return person.getId().toString();
+		return contact.getId().toString();
 		
 	    case "First Name":
-		return person.getFirstName();
+		return contact.getFirstName();
 		
 	    case "Last Name":
-		return person.getLastName();
+		return contact.getLastName();
 		
 	    case "Street":
-		return person.getStreet();
+		return contact.getAddress().getStreet();
 		
 	    case "Phone Number":
-		return person.getPhoneNumber().toString();
+		return contact.getPhoneNumber().toString();
 		
 	    case "Email":
-		return person.getEmail();
+		return contact.getEmail();
 		
 		default:
 			throw new IllegalArgumentException("Not implemented");

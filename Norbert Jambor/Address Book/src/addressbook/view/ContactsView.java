@@ -20,7 +20,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-import addressbook.model.ColumnTitleProvider;
+import addressbook.model.ContactColumnLabels;
 import addressbook.model.Contact;
 import addressbook.model.LabelProvider;
 import addressbook.model.ModelProvider;
@@ -41,7 +41,7 @@ public class ContactsView extends ViewPart {
 
 	private ContactFilter filter;
 
-	private ColumnTitleProvider titleProvider;
+	private ContactColumnLabels titleProvider;
 	
     private MyViewerComparator comparator;
 
@@ -119,7 +119,7 @@ public class ContactsView extends ViewPart {
 	private void createColumns(final Composite parent, final TableViewer tableViewer) {
 		int counter = 0;
 
-		for (ColumnTitleProvider title : titleProvider.values()) {
+		for (ContactColumnLabels title : titleProvider.values()) {
 			TableViewerColumn col = createTableViewerColumn(title.getText(), 100, counter);
 			columnList.add(col);
 			counter++;
