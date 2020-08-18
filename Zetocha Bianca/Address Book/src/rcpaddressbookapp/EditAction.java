@@ -8,14 +8,13 @@ import org.eclipse.ui.IViewPart;
 import Address.Book.Views.ContactView;
 import addressBook.editor.Editor;
 
-
-public class CreateAction implements IViewActionDelegate {
+public class EditAction implements IViewActionDelegate {
 	
 	private ContactView contactsView;
 
 	@Override
 	public void run(IAction action) {
-		Editor.openCreateEditor(contactsView.firstElement());
+		Editor.openEditor(contactsView.firstElement());
 	}
 
 	@Override

@@ -25,34 +25,16 @@
             class="Address.Book.Views.ContactView"
             icon="icons/eclipse16.png"
             id="RCPAddressBookApp.view"
-            name="View"
+            name="Contact View"
             restorable="true">
       </view>
       <view
             class="Address.Book.Views.DetalisView"
             icon="icons/eclipse16.png"
             id="RCPAddressBookApp.detalis"
-            name="DetalisView"
+            name="Detalis View"
             restorable="true">
       </view>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            defaultHandler="adressBook.cmd.UserCommandCreate"
-            id="RCPAddressBookApp.cmd.create"
-            name="Create">
-      </command>
-      <command
-            defaultHandler="addressBook.commands.DeletePerson"
-            id="addressBook.commands.DeletePerson"
-            name="Delete">
-      </command>
-      <command
-            defaultHandler="adressBook.cmd.UserCmdEditor"
-            id="RCPAddressBookApp.cmd.edit"
-            name="Edit">
-      </command>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
@@ -70,47 +52,6 @@
             id="RCPAddressBookApp.editor.Edit"
             name="Editor">
       </editor>
-   </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            allPopups="false"
-            locationURI="menu:org.eclipse.ui.main.menu ">
-         <menu
-               label="File">
-            <command
-                  commandId="org.eclipse.ui.file.exit"
-                  icon="icons/eclipse16.png"
-                  label="Exit"
-                  style="push">
-            </command>
-         </menu>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="toolbar:RCPAddressBookApp.view">
-         <command
-               commandId="RCPAddressBookApp.cmd.create"
-               icon="icons/create16.png"
-               label="Create Contact"
-               style="push"
-               tooltip="Create Contact">
-         </command>
-         <command
-               commandId="addressBook.commands.DeletePerson"
-               icon="icons/trash16.png"
-               label="Delete Contact"
-               style="push"
-               tooltip="Delete Contact">
-         </command>
-         <command
-               commandId="RCPAddressBookApp.cmd.edit"
-               icon="icons/edit16.png"
-               label="Edit Contact"
-               style="push"
-               tooltip="Edit Contact">
-         </command>
-      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -140,10 +81,25 @@
             id="RCPAddressBookApp.contactContribution"
             targetID="RCPAddressBookApp.view">
          <action
-               class="rcpaddressbookapp.CreateAction"
+               class="rcpaddressbookapp.DeleteAction"
                enablesFor="1"
-               id="RCPAddressBookApp.action1"
-               label="Editor"
+               id="RCPAddressBookApp.action2"
+               label="Delete"
+               style="push"
+               toolbarPath="additions">
+         </action>
+         <action
+               class="rcpaddressbookapp.EditAction"
+               enablesFor="1"
+               id="RCPAddressBookApp.editor.Edit"
+               label="Edit"
+               style="push"
+               toolbarPath="additions">
+         </action>
+         <action
+               class="rcpaddressbookapp.CreateAction"
+               id="RCPAddressBookApp.editor.create"
+               label="Create"
                style="push"
                toolbarPath="additions">
          </action>

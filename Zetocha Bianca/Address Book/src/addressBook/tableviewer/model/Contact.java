@@ -85,9 +85,6 @@ public class Contact {
 		propertyChangeSupport.firePropertyChange("id", this.id, this.id = id);
 	}
 
-	@Override
-	public String toString() {
-		return "Contact [firstName=" + firstName + ", lastName=" + lastName + "]";
-	}
+
 
 }
