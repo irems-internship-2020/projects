@@ -16,8 +16,138 @@
       <perspective
             class="rcp.addressbook.Perspective"
             name="RCP Perspective"
-            id="RCP.AdressBook.perspective">
+            id="RCP.AddressBook.perspective">
       </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="Address.Book.Views.ContactView"
+            icon="icons/eclipse16.png"
+            id="RCPAddressBookApp.view"
+            name="View"
+            restorable="true">
+      </view>
+      <view
+            class="Address.Book.Views.DetalisView"
+            icon="icons/eclipse16.png"
+            id="RCPAddressBookApp.detalis"
+            name="DetalisView"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="adressBook.cmd.UserCommandCreate"
+            id="RCPAddressBookApp.cmd.create"
+            name="Create">
+      </command>
+      <command
+            defaultHandler="addressBook.commands.DeletePerson"
+            id="addressBook.commands.DeletePerson"
+            name="Delete">
+      </command>
+      <command
+            defaultHandler="adressBook.cmd.UserCmdEditor"
+            id="RCPAddressBookApp.cmd.edit"
+            name="Edit">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="addressBook.editor.Editor"
+            default="false"
+            icon="icons/eclipse16.png"
+            id="RCPAddressBookApp.editor.create"
+            name="Create">
+      </editor>
+      <editor
+            class="addressBook.editor.Editor"
+            default="false"
+            icon="icons/eclipse16.png"
+            id="RCPAddressBookApp.editor.Edit"
+            name="Editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu ">
+         <menu
+               label="File">
+            <command
+                  commandId="org.eclipse.ui.file.exit"
+                  icon="icons/eclipse16.png"
+                  label="Exit"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:RCPAddressBookApp.view">
+         <command
+               commandId="RCPAddressBookApp.cmd.create"
+               icon="icons/create16.png"
+               label="Create Contact"
+               style="push"
+               tooltip="Create Contact">
+         </command>
+         <command
+               commandId="addressBook.commands.DeletePerson"
+               icon="icons/trash16.png"
+               label="Delete Contact"
+               style="push"
+               tooltip="Delete Contact">
+         </command>
+         <command
+               commandId="RCPAddressBookApp.cmd.edit"
+               icon="icons/edit16.png"
+               label="Edit Contact"
+               style="push"
+               tooltip="Edit Contact">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="*">
+         <view
+               id="RCPAddressBookApp.detalis"
+               minimized="false"
+               relationship="right"
+               relative="org.eclipse.ui.editorss"
+               visible="false">
+         </view>
+         <view
+               closeable="false"
+               id="RCPAddressBookApp.view"
+               minimized="false"
+               moveable="false"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="RCPAddressBookApp.contactContribution"
+            targetID="RCPAddressBookApp.view">
+         <action
+               class="rcpaddressbookapp.CreateAction"
+               enablesFor="1"
+               id="RCPAddressBookApp.action1"
+               label="Editor"
+               style="push"
+               toolbarPath="additions">
+         </action>
+      </viewContribution>
    </extension>
 
 </plugin>
