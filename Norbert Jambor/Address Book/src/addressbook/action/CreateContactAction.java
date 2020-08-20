@@ -5,7 +5,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-import addressbook.editor.CreateContact;
+import addressbook.editor.Editor;
 import addressbook.view.ContactsView;
 
 public class CreateContactAction implements IViewActionDelegate {
@@ -15,7 +15,7 @@ public class CreateContactAction implements IViewActionDelegate {
 
 	@Override
 	public void run(IAction action) {
-		CreateContact.openCreateEditor();
+		Editor.openCreateEditor();
 	}
 
 	@Override

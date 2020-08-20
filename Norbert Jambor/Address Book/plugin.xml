@@ -29,7 +29,7 @@
       </view>
       <view
             class="addressbook.view.AddressView"
-            id="addressbook.view.address"
+            id="addressbook.editor.create"
             name="Details View"
             restorable="true">
       </view>
@@ -37,7 +37,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="addressbook.editor.CreateContact"
+            class="addressbook.editor.Editor"
             default="false"
             id="addressbook.editor.create"
             name="Create Contact">
@@ -62,7 +62,7 @@
          <view
                id="addressbook.editor.create"
                minimized="false"
-               relationship="right"
+               relationship="stack"
                relative="org.eclipse.ui.editorss"
                visible="false">
          </view>

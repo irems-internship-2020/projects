@@ -6,12 +6,12 @@ import org.eclipse.swt.SWT;
 
 import addressbook.model.Contact;
 
-public class MyViewerComparator extends ViewerComparator {
+public class ContactViewerComparator extends ViewerComparator {
     private int propertyIndex;
     private static final int DESCENDING = 1;
     private int direction = DESCENDING;
 
-    public MyViewerComparator() {
+    public ContactViewerComparator() {
         this.propertyIndex = 0;
         direction = DESCENDING;
     }

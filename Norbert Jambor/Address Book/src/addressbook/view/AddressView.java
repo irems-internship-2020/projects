@@ -11,8 +11,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.part.ViewPart;
 
-import addressbook.model.AddressLabelProvider;
-import addressbook.model.AddressTitleProvider;
+import addressbook.enumLabels.AddressColumnLabels;
 import addressbook.model.Contact;
 
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -23,11 +22,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
 public class AddressView extends ViewPart {
-	public static final String ID = "addressbook.view.address";
+	public static final String ID = "addressbook.editor.create";
 
 	private TableViewer viewer;
 
-	private AddressTitleProvider titleProvider;
+	private AddressColumnLabels titleProvider;
 
 	List<TableViewerColumn> columnList = new ArrayList<TableViewerColumn>();
 
@@ -73,7 +72,7 @@ public class AddressView extends ViewPart {
 	private void createColumns(final Composite parent, final TableViewer tableViewer) {
 		int counter = 0;
 
-		for (AddressTitleProvider title : titleProvider.values()) {
+		for (AddressColumnLabels title : titleProvider.values()) {
 			TableViewerColumn col = createTableViewerColumn(title.getText(), 100, counter);
 			columnList.add(col);
 			counter++;

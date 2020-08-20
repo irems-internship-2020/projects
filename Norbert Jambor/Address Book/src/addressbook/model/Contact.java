@@ -8,14 +8,14 @@ public class Contact {
 	private String firstName;
 	private String lastName;
 	private Address address;
-	private Integer phoneNumber;
+	private String phoneNumber;
 	private String email;
 	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
 	public Contact() {
 	}
 
-	public Contact(Integer id, String firstName, String lastName, Address address, Integer phoneNumber,
+	public Contact(Integer id, String firstName, String lastName, Address address, String phoneNumber,
 			String email) {
 		this.id = id;
 		this.firstName = firstName;
@@ -49,7 +49,7 @@ public class Contact {
 		return address;
 	}
 
-	public Integer getPhoneNumber() {
+	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
@@ -73,7 +73,7 @@ public class Contact {
 		propertyChangeSupport.firePropertyChange("address", this.address, this.address = address);
 	}
 
-	public void setPhoneNumber(Integer phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) {
 		propertyChangeSupport.firePropertyChange("married", this.phoneNumber, this.phoneNumber = phoneNumber);
 	}
 

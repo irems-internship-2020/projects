@@ -1,38 +1,15 @@
-package addressbook.model;
+package addressbook.view;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.swt.graphics.Image;
 
-public class AddressLabelProvider implements ITableLabelProvider {
-	
-    private List<TableViewerColumn> columnList = new ArrayList<TableViewerColumn>();
-	
+import addressbook.model.Contact;
+
+public class AddressLabelProvider extends BaseColumnsLabels {
+		
 	public AddressLabelProvider(final List<TableViewerColumn> columnList){
-		this.columnList = columnList;
-	}
-
-	@Override
-	public void addListener(ILabelProviderListener listener) {}
-
-	@Override
-	public void dispose() {}
-
-	@Override
-	public boolean isLabelProperty(Object element, String property) {
-		return false;
-	}
-
-	@Override
-	public void removeListener(ILabelProviderListener listener) {}
-
-	@Override
-	public Image getColumnImage(Object element, int columnIndex) {
-		return null;
+		super(columnList);
 	}
 
 	@Override

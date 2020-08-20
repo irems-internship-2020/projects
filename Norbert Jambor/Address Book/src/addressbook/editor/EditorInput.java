@@ -4,7 +4,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
-public class EditorContactInput implements IEditorInput {
+public class EditorInput implements IEditorInput {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
@@ -24,7 +24,7 @@ public class EditorContactInput implements IEditorInput {
 
 	@Override
 	public String getName() {
-		return "User Editor";
+		return "User Create";
 	}
 
 	@Override
@@ -34,6 +34,7 @@ public class EditorContactInput implements IEditorInput {
 
 	@Override
 	public String getToolTipText() {
-		return "User Editor";
+		return "User Create";
 	}
+
 }

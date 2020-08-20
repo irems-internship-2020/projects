@@ -7,13 +7,13 @@ public class Address {
 	private String country;
 	private String city;
 	private String street;
-	private Integer postalCode;
+	private String postalCode;
 	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
 	public Address() {
 	}
 
-	public Address(String country, String city, String street, Integer postalCode) {
+	public Address(String country, String city, String street, String postalCode) {
 		super();
 		this.street = street;
 		this.country = country;
@@ -41,7 +41,7 @@ public class Address {
 		return city;
 	}
 
-	public Integer getPostalCode() {
+	public String getPostalCode() {
 		return postalCode;
 	}
 
@@ -57,7 +57,7 @@ public class Address {
 		propertyChangeSupport.firePropertyChange("lastName", this.city, this.city = city);
 	}
 
-	public void setPostalCode(Integer postalCode) {
+	public void setPostalCode(String postalCode) {
 		propertyChangeSupport.firePropertyChange("lastName", this.postalCode, this.postalCode = postalCode);
 	}
 

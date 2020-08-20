@@ -1,7 +1,9 @@
 package addressbook.action;
 
+import java.beans.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -11,11 +13,13 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
+import addressbook.database.DataBaseOperations;
 import addressbook.model.Contact;
-import addressbook.model.ModelProvider;
 import addressbook.view.ContactsView;
 
 public class DeleteContactAction implements IViewActionDelegate {
+		
+	private DataBaseOperations dataBase = new DataBaseOperations();
 
 	@Override
 	public void run(IAction action) {
@@ -24,13 +28,20 @@ public class DeleteContactAction implements IViewActionDelegate {
 		ISelection selection = view.getSite().getSelectionProvider().getSelection();
 		
 		if (selection != null && selection instanceof IStructuredSelection) {
-			List<Contact> persons = ModelProvider.INSTANCE.getContacts();
+			//List<Contact> persons = ModelProviderEnum.INSTANCE.getContacts();
 			IStructuredSelection sel = (IStructuredSelection) selection;
 
 			for (@SuppressWarnings("unchecked")
 			Iterator<Contact> iterator = sel.iterator(); iterator.hasNext();) {
-				Contact person = iterator.next();
-				persons.remove(person);
+				Contact contact = iterator.next();
+				//contact.remove(contact);
+				try {
+					//ResultSet result = statement.executeQuery(dataBase.loadDB());
+					dataBase.deleteDB(contact);
+					view.setTableInput();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 			view.getViewer().refresh();
 		}

@@ -1,5 +1,8 @@
 package addressbook.view;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +23,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-import addressbook.model.ContactColumnLabels;
+import addressbook.model.Address;
 import addressbook.model.Contact;
-import addressbook.model.LabelProvider;
-import addressbook.model.ModelProvider;
-import addressbook.comparator.MyViewerComparator;
+import addressbook.comparator.ContactViewerComparator;
+import addressbook.database.DataBaseOperations;
+import addressbook.enumLabels.ContactColumnLabels;
 import addressbook.filter.ContactFilter;
 
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -38,25 +41,34 @@ public class ContactsView extends ViewPart {
 	public static final String ID = "addressbook.view.contact";
 
 	public TableViewer viewer;
-
 	private ContactFilter filter;
-
 	private ContactColumnLabels titleProvider;
-	
-    private MyViewerComparator comparator;
-
+    private ContactViewerComparator comparator;
+	private DataBaseOperations dataBase = new DataBaseOperations();
+	private Statement statement;
+	private Contact contact;
+	private Address address;
 	List<TableViewerColumn> columnList = new ArrayList<TableViewerColumn>();
 
 	public void createPartControl(Composite parent) {
+		try {
+			statement = dataBase.establishConnection();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		GridLayout layout = new GridLayout(2, false);
 		parent.setLayout(layout);
 		Label searchLabel = new Label(parent, SWT.NONE);
 		searchLabel.setText("Search: ");
 		final Text searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
 		searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-		createViewer(parent);
+		try {
+			createViewer(parent);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
-        comparator = new MyViewerComparator();
+        comparator = new ContactViewerComparator();
         viewer.setComparator(comparator);
         
 		searchText.addKeyListener(new KeyAdapter() {
@@ -69,7 +81,7 @@ public class ContactsView extends ViewPart {
 		viewer.addFilter(filter);
 	}
 
-	private void createViewer(Composite parent) {
+	private void createViewer(Composite parent) throws SQLException {
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		createColumns(parent, viewer);
 		final Table table = viewer.getTable();
@@ -77,9 +89,11 @@ public class ContactsView extends ViewPart {
 		table.setLinesVisible(true);
 
 		viewer.setContentProvider(new ArrayContentProvider());
-		viewer.setInput(ModelProvider.INSTANCE.getContacts());
+		
 		getSite().setSelectionProvider(viewer);
-
+		
+		setTableInput();
+		
 		GridData gridData = new GridData();
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
@@ -104,6 +118,31 @@ public class ContactsView extends ViewPart {
 			}
 		});
 	}
+	
+	public void setTableInput() throws SQLException {
+		ResultSet result = statement.executeQuery(dataBase.loadDB());
+		List<Contact> contacts = new ArrayList<Contact>();
+		while (result.next()) {
+			contact = new Contact();
+			address = new Address();
+			contact.setId(result.getInt("contact_id"));
+			contact.setFirstName(result.getString("first_name"));
+			contact.setLastName(result.getString("last_name"));
+			contact.setPhoneNumber(result.getString("phone_number"));
+			contact.setEmail(result.getString("email"));
+			
+			address.setCountry(result.getString("country"));
+			address.setCity(result.getString("city"));
+			address.setStreet(result.getString("street"));
+			address.setPostalCode(result.getString("postal_code"));
+			contact.setAddress(address);
+			
+			contacts.add(contact);
+		}
+		viewer.setInput(contacts);
+		
+		viewer.refresh();
+	}
 
 	public Contact firstElement() {
 		StructuredSelection selection = (StructuredSelection) viewer.getSelection();
@@ -125,7 +164,7 @@ public class ContactsView extends ViewPart {
 			counter++;
 		}
 
-		tableViewer.setLabelProvider(new LabelProvider(columnList));
+		tableViewer.setLabelProvider(new ContactLabelProvider(columnList));
 	}
 
 	private TableViewerColumn createTableViewerColumn(String title, int bound, final int colNumber) {
