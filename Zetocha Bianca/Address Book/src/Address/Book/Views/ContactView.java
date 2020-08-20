@@ -10,6 +10,8 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -28,6 +30,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 
+import addressBook.comparator.MyViewerComparator;
+import addressBook.filter.ContactFilter;
 import addressBook.sort.MyViewerComparatorC;
 import addressBook.tableviewer.model.ColumTitle;
 import addressBook.tableviewer.model.Contact;
@@ -38,9 +42,9 @@ public class ContactView extends ViewPart {
 
 	public static final String ID = "RCPAddressBookApp.view";
 
-	private MyViewerComparatorC comparator;
+	private MyViewerComparator comparator;
 	private TableViewer tableViewer;
-	// We use icons
+	private ContactFilter filter;
 
 	private ColumTitle titleProvider;
 	List<TableViewerColumn> columnList = new ArrayList<TableViewerColumn>();
@@ -53,6 +57,18 @@ public class ContactView extends ViewPart {
 		final Text searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
 		searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 		createViewer(parent);
+		
+		comparator = new MyViewerComparator();
+        tableViewer.setComparator(comparator);
+        
+		searchText.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent ke) {
+				filter.setSearchText(searchText.getText());
+				tableViewer.refresh();
+			}
+		});
+		filter = new ContactFilter();
+		tableViewer.addFilter(filter);
 	}
 
 	private void createViewer(Composite parent) {

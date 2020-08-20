@@ -1,5 +1,7 @@
 package addressBook.editor;
 
+import java.util.List;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -37,25 +39,63 @@ public class Editor extends EditorPart {
 	private Text userPCode;
 	private Text userPNumber;
 	private Text userEmail;
+	private static boolean isOpen = false;
 
 	public Editor() {
 	}
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		setDirty(false);
-		contact = new Contact();
-		address = new Address();
-		contact.setId(Integer.valueOf(userId.getText()));
+		if (isOpen) {
+			contact = new Contact();
+			address = new Address();
+		}
+		if (userId.getText().toString() != "")
+			contact.setId(Integer.valueOf(userId.getText()));
+		else {
+			contact.setId(1);
+		}
 		contact.setFirstName(userName.getText().toString());
 		contact.setLastName(userLname.getText().toString());
+
+		if (userId.getText().toString() != "")
+			address.setId(Integer.valueOf(userId.getText()));
+		else {
+			address.setId(1);
+		}
+
 		address.setCountry(userCountry.getText().toString());
 		address.setCity(userCity.getText().toString());
 		address.setStreet(userStreet.getText().toString());
 		address.setPostalCode(userPCode.getText().toString());
-		contact.setPhoneNumber(userPNumber.getText().toString());
+		if (userPNumber.getText().toString() != "") {
+			contact.setPhoneNumber(userPNumber.getText());
+		} else {
+			contact.setPhoneNumber("0");
+		}
 		contact.setEmail(userEmail.getText().toString());
 		contact.setAddress(address);
+
+		if (isOpen) {
+			List<Contact> contacts = ModelProvider.INSTANCE.getContacts();
+			contacts.add(contact);
+		}
+
+		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		ContactView view = (ContactView) activePage.findView("RCPAddressBookApp.view");
+		view.getViewer().refresh();
+
+		userId.setText("");
+		userName.setText("");
+		userLname.setText("");
+		userCountry.setText("");
+		userCity.setText("");
+		userStreet.setText("");
+		userPCode.setText("");
+		userPNumber.setText("");
+		userEmail.setText("");
+
+		setDirty(false);
 	}
 
 	@Override
@@ -215,7 +255,7 @@ public class Editor extends EditorPart {
 	}
 
 	private void createIdWidget(Composite parent) {
-		new Label(parent, SWT.NONE).setText("Email:");
+		new Label(parent, SWT.NONE).setText("id:");
 		userId = new Text(parent, SWT.SINGLE | SWT.BORDER);
 		userId.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		userId.addModifyListener(new ModifyListener() {
@@ -232,11 +272,41 @@ public class Editor extends EditorPart {
 
 	}
 
+	private void setModelAndWidgetEmpty() {
+		userId.setText("");
+		userName.setText("");
+		userLname.setText("");
+		userCountry.setText("");
+		userCity.setText("");
+		userStreet.setText("");
+		userPCode.setText("");
+		userPNumber.setText("");
+		userEmail.setText("");
+
+		setDirty(false);
+
+	}
+
 	private void setModelAndWidget(Contact contact) {
 		this.contact = contact;
+		address = contact.getAddress();
+		setDirty(false);
+
+		userId.setText(contact.getId().toString());
+		userName.setText(contact.getFirstName());
+		userLname.setText(contact.getLastName());
+		userCountry.setText(address.getCountry());
+		userCity.setText(address.getCity());
+		userStreet.setText(address.getStreet());
+		userPCode.setText(address.getPostalCode().toString());
+		userPNumber.setText(contact.getPhoneNumber().toString());
+		userEmail.setText(contact.getEmail());
+		contact.setAddress(address);
+
 	}
 
 	public static void openEditor(Contact contactsView) {
+		isOpen = false;
 		UserCreate input = new UserCreate();
 
 		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
@@ -249,6 +319,28 @@ public class Editor extends EditorPart {
 			} else {
 				Editor newAddress = (Editor) activePage.openEditor(input, ID);
 				newAddress.setModelAndWidget(contactsView);
+			}
+
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void openCreateEditor(Contact contactsView) {
+		isOpen = true;
+		UserCreate input = new UserCreate();
+
+		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+		try {
+			Editor addressBookEditor = (Editor) activePage.getActiveEditor();
+
+			if (addressBookEditor != null) {
+				addressBookEditor.setModelAndWidgetEmpty();
+			} else {
+				@SuppressWarnings("unused")
+				Editor newAddress = (Editor) activePage.openEditor(input, ID);
+
 			}
 
 		} catch (PartInitException e) {
