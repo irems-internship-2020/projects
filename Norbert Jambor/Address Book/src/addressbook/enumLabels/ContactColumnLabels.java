@@ -1,19 +1,16 @@
-package addressbook.model;
+package addressbook.enumLabels;
 
-public enum AllTitleProvider {
+public enum ContactColumnLabels {
 	ID("ID"), 
 	FIRSTNAME("First Name"), 
 	LASTNAME("Last Name"), 
-	COUNTRY("Country"), 
-	CITY("City"), 
-	STREET("Street"),
-	POSTAL("Postal Code"), 
+	STREET("Street"), 
 	PHONENUMBER("Phone Number"), 
 	EMAIL("Email");
 
 	private String text;
 
-	AllTitleProvider(final String text) {
+	ContactColumnLabels(final String text) {
 		this.text = text;
 	}
 

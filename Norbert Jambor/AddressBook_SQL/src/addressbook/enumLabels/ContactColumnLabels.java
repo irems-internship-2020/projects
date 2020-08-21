@@ -1,7 +1,12 @@
-package addressbook.model;
+package addressbook.enumLabels;
 
 public enum ContactColumnLabels {
-	ID("ID"), FIRSTNAME("First Name"), LASTNAME("Last Name"), STREET("Street"), PHONENUMBER("Phone Number"), EMAIL("Email");
+	ID("ID"), 
+	FIRSTNAME("First Name"), 
+	LASTNAME("Last Name"), 
+	STREET("Street"), 
+	PHONENUMBER("Phone Number"), 
+	EMAIL("Email");
 
 	private String text;
 

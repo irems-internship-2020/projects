@@ -4,7 +4,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
-public class CreateContactInput implements IEditorInput {
+public class EditorInput implements IEditorInput {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override

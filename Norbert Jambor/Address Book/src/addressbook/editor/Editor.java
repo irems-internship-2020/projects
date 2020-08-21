@@ -1,7 +1,5 @@
 package addressbook.editor;
 
-import java.util.List;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -17,20 +15,20 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
+import addressbook.database.DataBaseOperations;
+import addressbook.enumLabels.AllColumnsLabels;
 import addressbook.model.Address;
-import addressbook.model.AllTitleProvider;
 import addressbook.model.Contact;
-import addressbook.model.ModelProvider;
 import addressbook.view.ContactsView;
 
 import org.eclipse.swt.widgets.Text;
 
 @SuppressWarnings("static-access")
-public class CreateContact extends EditorPart {
+public class Editor extends EditorPart {
 
 	public static final String ID = "addressbook.editor.create";
 
-	private AllTitleProvider title;
+	private AllColumnsLabels title;
 	private Text id;
 	private Text firstName;
 	private Text lastName;
@@ -44,12 +42,14 @@ public class CreateContact extends EditorPart {
 	private Address address;
 	private boolean dirty = false;
 	private static boolean isCreate = false;
+	private DataBaseOperations dataBase = new DataBaseOperations();
 
-	public CreateContact() {
+	public Editor() {
 	}
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
+
 		if (isCreate) {
 			contact = new Contact();
 			address = new Address();
@@ -60,35 +60,42 @@ public class CreateContact extends EditorPart {
 		else {
 			contact.setId(0);
 		}
-		contact.setFirstName(firstName.getText().toString());
-		contact.setLastName(lastName.getText().toString());
-		address.setCountry(country.getText().toString());
-		address.setCity(city.getText().toString());
-		address.setStreet(street.getText().toString());
-		if (postalCode.getText().toString() != "")
-			address.setPostalCode(Integer.valueOf(postalCode.getText()));
-		else {
-			address.setPostalCode(0);
-		}
-		if (phoneNumber.getText().toString() != "") {
-			contact.setPhoneNumber(Integer.valueOf(phoneNumber.getText()));
-		} else {
-			contact.setPhoneNumber(0);
-		}
-		contact.setEmail(email.getText().toString());
+		contact.setFirstName(firstName.getText());
+		contact.setLastName(lastName.getText());
+		address.setCountry(country.getText());
+		address.setCity(city.getText());
+		address.setStreet(street.getText());
+		address.setPostalCode(postalCode.getText());
+		contact.setPhoneNumber(phoneNumber.getText());
+		contact.setEmail(email.getText());
 		contact.setAddress(address);
 
-		if (isCreate) {
-			List<Contact> contacts = ModelProvider.INSTANCE.getContacts();
-			contacts.add(contact);
-		}
+//		if (isCreate) {
+//			List<Contact> contacts = ModelProviderEnum.INSTANCE.getContacts();
+//			contacts.add(contact);
+//		}
 
+		if (isCreate) {
+			try {
+				dataBase.insertDB(contact);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else {
+			try {
+				dataBase.updateDB(contact);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		ContactsView view = (ContactsView) activePage.findView("addressbook.view.contact");
 		view.getViewer().refresh();
 
 		setEmptyModel();
-		
+
 		setDirty(false);
 	}
 
@@ -98,8 +105,8 @@ public class CreateContact extends EditorPart {
 
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
-		if (!(input instanceof CreateContactInput)) {
-			throw new PartInitException("Invalid Input: Must be " + CreateContactInput.class.getName());
+		if (!(input instanceof EditorInput)) {
+			throw new PartInitException("Invalid Input: Must be " + EditorInput.class.getName());
 		}
 		setSite(site);
 		setInput(input);
@@ -132,9 +139,7 @@ public class CreateContact extends EditorPart {
 		data.horizontalSpan = 2;
 		parent.setLayoutData(data);
 
-		new Label(parent, SWT.NONE).setText(title.ID.getText());
-		id = new Text(parent, SWT.SINGLE | SWT.BORDER);
-		id.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		createIdWidget(parent);
 
 		createFirstNameWidget(parent);
 
@@ -153,11 +158,6 @@ public class CreateContact extends EditorPart {
 		createEmailWidget(parent);
 	}
 
-	private void createEmailWidget(Composite parent) {
-		new Label(parent, SWT.NONE).setText(title.EMAIL.getText());
-		email = createTextWidget(parent);
-	}
-	
 	private Text createTextWidget(Composite parent) {
 		Text textWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
 		textWidget.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
@@ -168,6 +168,16 @@ public class CreateContact extends EditorPart {
 			}
 		});
 		return textWidget;
+	}
+
+	private void createIdWidget(Composite parent) {
+		new Label(parent, SWT.NONE).setText(title.ID.getText());
+		id = createTextWidget(parent);
+	}
+
+	private void createEmailWidget(Composite parent) {
+		new Label(parent, SWT.NONE).setText(title.EMAIL.getText());
+		email = createTextWidget(parent);
 	}
 
 	private void createPhoneNumberWidget(Composite parent) {
@@ -241,17 +251,17 @@ public class CreateContact extends EditorPart {
 	public static void openEditor(Contact model) {
 		isCreate = false;
 
-		CreateContactInput input = new CreateContactInput();
+		EditorInput input = new EditorInput();
 
 		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
 		try {
-			CreateContact addressBookEditor = (CreateContact) activePage.getActiveEditor();
+			Editor addressBookEditor = (Editor) activePage.getActiveEditor();
 
 			if (addressBookEditor != null) {
 				addressBookEditor.setModel(model);
 			} else {
-				CreateContact newAddress = (CreateContact) activePage.openEditor(input, ID);
+				Editor newAddress = (Editor) activePage.openEditor(input, ID);
 				newAddress.setModel(model);
 			}
 
@@ -263,18 +273,18 @@ public class CreateContact extends EditorPart {
 	public static void openCreateEditor() {
 		isCreate = true;
 
-		CreateContactInput input = new CreateContactInput();
+		EditorInput input = new EditorInput();
 
 		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
 		try {
-			CreateContact addressBookEditor = (CreateContact) activePage.getActiveEditor();
+			Editor addressBookEditor = (Editor) activePage.getActiveEditor();
 
 			if (addressBookEditor != null) {
 				addressBookEditor.setEmptyModel();
 			} else {
 				@SuppressWarnings("unused")
-				CreateContact newAddress = (CreateContact) activePage.openEditor(input, ID);
+				Editor newAddress = (Editor) activePage.openEditor(input, ID);
 			}
 		} catch (PartInitException e) {
 			e.printStackTrace();
