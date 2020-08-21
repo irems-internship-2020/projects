@@ -1,4 +1,0 @@
-Dname=addressbook.database.DataBaseOperations
-URL=jdbc:postgresql://localhost:5432/example
-Uname=postgres
-password=sqldatabase
