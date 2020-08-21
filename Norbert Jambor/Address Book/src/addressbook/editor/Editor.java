@@ -1,7 +1,5 @@
 package addressbook.editor;
 
-import java.sql.SQLException;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -44,7 +42,7 @@ public class Editor extends EditorPart {
 	private Address address;
 	private boolean dirty = false;
 	private static boolean isCreate = false;
-	private DataBaseOperations dataBase;
+	private DataBaseOperations dataBase = new DataBaseOperations();
 
 	public Editor() {
 	}

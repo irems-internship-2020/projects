@@ -1,8 +1,5 @@
 package addressbook.action;
 
-import java.beans.Statement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Iterator;
 
 import org.eclipse.jface.action.IAction;
