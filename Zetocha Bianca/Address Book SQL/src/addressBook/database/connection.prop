@@ -1,0 +1,4 @@
+Dname = addressBook.database.DataBaseCRUD
+URL = jdbc:postgresql://localhost:5432/example
+Uname = postgres
+password = postgres
