@@ -14,4 +14,5 @@ Automatic-Module-Name: Address.Book
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/postgresql-42.2.6.jre6.jar,
  .,
- lib/
+ lib/eclipselink.jar,
+ lib/jakarta.persistence_2.2.3.jar
