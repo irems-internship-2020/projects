@@ -18,7 +18,8 @@ public class Address extends BaseEntity {
 	private String postalCode;
 	@Transient
 	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-
+	 @OneToOne(mappedBy = "address")
+	private Contact contact;
 	public Address() {
 
 	}

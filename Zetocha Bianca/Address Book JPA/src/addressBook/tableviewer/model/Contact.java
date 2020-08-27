@@ -14,14 +14,17 @@ public class Contact extends BaseEntity {
 	private String firstName;
 	@Column(name = "last_name")
 	private String lastName;
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_fk", referencedColumnName = "id")
 	private Address address;
 	@Column(name = "phone_number")
 	private String phoneNumber;
 	@Column(name = "email")
 	private String email;
-	
+
 	@Transient
 	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+
 	public Contact() {
 
 	}

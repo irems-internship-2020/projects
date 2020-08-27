@@ -29,9 +29,7 @@ public class DataBaseCRUD {
 	}
 
 	public void dataBaseInsert(Contact contact) {
-			Address address = contact.getAddress();
 			em.persist(contact);
-			em.persist(address);
 			em.getTransaction().commit();
 	}
 	public void beginTransaction() {
@@ -41,10 +39,7 @@ public class DataBaseCRUD {
 	}
 
 	public void dataBaseDelete(Contact contact) {
-		Address address = contact.getAddress();
-		address = em.find(address.getClass(), address.getId());
 		contact = em.find(contact.getClass(), contact.getId());
-		em.remove(address);
 		em.remove(contact);
 	}
 
