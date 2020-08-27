@@ -5,6 +5,7 @@ import java.beans.PropertyChangeSupport;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -17,6 +18,9 @@ public class Address extends BaseEntity{
 	private String street;
 	@Column(name = "postal_code")
 	private String postalCode;
+	
+	@OneToOne(mappedBy = "address")
+	private Contact contact;
 	
 	@Transient
 	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);

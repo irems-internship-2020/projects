@@ -6,7 +6,7 @@ import java.beans.PropertyChangeSupport;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -22,10 +22,9 @@ public class Contact extends BaseEntity{
 	@Column(name = "phone_number")
 	private String phoneNumber;
 	private String email;
-	
-	//@OneToOne(mappedBy = "contact", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-	
-	@OneToOne
+		
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_fk", referencedColumnName = "Id")
 	private Address address;
 	
 	@Transient

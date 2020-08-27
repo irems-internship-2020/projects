@@ -25,9 +25,7 @@ public class JpaOperations {
 	}
 
 	public void insertJpa(Contact contact) {
-		Address address = contact.getAddress();
 		em.persist(contact);
-		em.persist(address);
 		em.getTransaction().commit();
 	}
 
