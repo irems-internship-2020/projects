@@ -3,10 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Address_Book
 Bundle-SymbolicName: AddressBook;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-ClassPath: lib/postgresql-42.2.6.jre6.jar,
- .,
- lib/eclipselink.jar,
- lib/jakarta.persistence_2.2.3.jar
 Bundle-Activator: addressbook.main.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -16,3 +12,9 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: Address.Book
 Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: lib/postgresql-42.2.6.jre6.jar,
+ .,
+ lib/eclipselink.jar,
+ lib/jboss-client-4.0.2.jar,
+ lib/javax.persistence-api-2.2.jar,
+ lib/AddressBook_EJB_Server.jar
