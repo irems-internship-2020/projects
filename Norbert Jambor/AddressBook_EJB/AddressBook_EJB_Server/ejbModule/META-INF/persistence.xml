@@ -4,7 +4,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 
-	<persistence-unit name="AddressBook"
+	<persistence-unit name="AddressBook_JPA"
 		transaction-type="JTA">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<!-- java:jboss/datasources/PostgresDS -->
@@ -15,17 +15,11 @@
 
 		<properties>
 			<property name="hibernate.format_sql" value="true" />
-			<property name="hibernate.dialect"
-				value="org.hibernate.dialect.PostgreSQLDialect" />
-
-			<!-- <property name="hibernate.hbm2ddl.auto" value="create"/> -->
-
-			<property name="hibernate.cache.use_query_cache"
-				value="true" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+<!-- 			<property name="hibernate.hbm2ddl.auto" value="create"/> -->
+			<property name="hibernate.cache.use_query_cache" value="true" />
 			<property name="hibernate.show_sql" value="true" />
-			<property name="hibernate.cache.provider_class"
-				value="org.hibernate.cache.HashtableCacheProvider" />
-
+			<property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider" />
 		</properties>
 	</persistence-unit>
 </persistence>

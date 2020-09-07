@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.NamingException;
+
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -23,9 +25,9 @@ import org.eclipse.ui.part.ViewPart;
 
 import addressbook.model.Contact;
 import addressbook.comparator.ContactViewerComparator;
+import addressbook.database.DatabaseOperations;
 import addressbook.enumLabels.ContactColumnLabels;
 import addressbook.filter.ContactFilter;
-import addressbook_server.JpaOperations;
 
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.layout.GridData;
@@ -42,7 +44,7 @@ public class ContactsView extends ViewPart {
 	private ContactColumnLabels titleProvider;
     private ContactViewerComparator comparator;
 	List<TableViewerColumn> columnList = new ArrayList<TableViewerColumn>();
-	private JpaOperations jpaOperations = new JpaOperations();
+	private DatabaseOperations databaseOperations = new DatabaseOperations();
 
 	public ContactsView() {
 	}
@@ -74,7 +76,7 @@ public class ContactsView extends ViewPart {
 		
 	}
 
-	private void createViewer(Composite parent) throws SQLException {
+	private void createViewer(Composite parent) throws SQLException, NamingException {
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		createColumns(parent, viewer);
 		final Table table = viewer.getTable();
@@ -85,7 +87,7 @@ public class ContactsView extends ViewPart {
 		
 		getSite().setSelectionProvider(viewer);
 		
-		viewer.setInput(jpaOperations.loadJpa());
+		viewer.setInput(databaseOperations.getDatabase().loadJpa());
 		
 		GridData gridData = new GridData();
 		gridData.verticalAlignment = GridData.FILL;

@@ -1,4 +1,4 @@
-package addressbook_server;
+package addressbook.server;
 
 import java.util.List;
 

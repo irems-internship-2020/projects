@@ -1,5 +1,7 @@
 package addressbook.editor;
 
+import javax.naming.NamingException;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -15,8 +17,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
+import addressbook.database.DatabaseOperations;
 import addressbook.enumLabels.AllColumnsLabels;
-import addressbook_server.JpaOperations;
 import addressbook.model.Address;
 import addressbook.model.Contact;
 import addressbook.view.ContactsView;
@@ -41,7 +43,7 @@ public class Editor extends EditorPart {
 	private Address address;
 	private boolean dirty = false;
 	private static boolean isCreate = false;
-	private JpaOperations jpaOperations = new JpaOperations();
+	private DatabaseOperations databaseOperations = new DatabaseOperations();
 
 	public Editor() {
 	}
@@ -52,9 +54,12 @@ public class Editor extends EditorPart {
 		if (isCreate) {
 			contact = new Contact();
 			address = new Address();
-		}
-		else {
-			contact = jpaOperations.updateJpa(contact);
+		} else {
+			try {
+				contact = databaseOperations.getDatabase().updateJpa(contact);
+			} catch (NamingException e) {
+				e.printStackTrace();
+			}
 		}
 
 		contact.setFirstName(firstName.getText());
@@ -67,16 +72,24 @@ public class Editor extends EditorPart {
 		contact.setEmail(email.getText());
 		contact.setAddress(address);
 		
-		if (isCreate) {
-			jpaOperations.beginTransaction();
-			jpaOperations.insertJpa(contact);
-		} else {
-			jpaOperations.closeTransaction();
+		try {
+			if (isCreate) {
+				databaseOperations.getDatabase().beginTransaction();
+				databaseOperations.getDatabase().insertJpa(contact);
+			} else {
+				databaseOperations.getDatabase().closeTransaction();
+			}
+		} catch (NamingException e) {
+			e.printStackTrace();
 		}
 
 		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		ContactsView view = (ContactsView) activePage.findView("addressbook.view.contact");
-		view.viewer.setInput(jpaOperations.loadJpa());
+		try {
+			view.viewer.setInput(databaseOperations.getDatabase().loadJpa());
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
 		view.getViewer().refresh();
 
 		setEmptyModel();
